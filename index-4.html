@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07110d">
+<title>Krafton — Hidden Market</title>
+<style>
+:root{--bg:#050907;--panel:#0b1510;--panel2:#0e1d15;--green:#39f59a;--green2:#16b96a;--text:#edf7f0;--muted:#91a69a;--line:rgba(98,255,168,.15);--danger:#ff7979}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:radial-gradient(ellipse at 80% 0%,rgba(22,185,106,.13),transparent 36%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+  button{font:inherit;cursor:pointer}
+  .noise{position:fixed;inset:0;pointer-events:none;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");z-index:10}
+  .topbar{height:76px;padding:0 clamp(20px,5vw,76px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(5,9,7,.8);backdrop-filter:blur(14px);position:sticky;top:0;z-index:5}
+  .brand{display:flex;align-items:center;gap:12px;letter-spacing:.16em;font-weight:850;font-size:18px}
+  .brandmark{width:34px;height:34px;border:1px solid var(--green);color:var(--green);display:grid;place-items:center;clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%);font-weight:900;font-size:20px}
+  .brand small{display:block;font-size:9px;color:var(--muted);letter-spacing:.26em;font-weight:600;margin-top:3px}
+  .wallet{border:1px solid var(--line);background:rgba(15,29,21,.8);border-radius:10px;padding:9px 13px;display:flex;align-items:center;gap:10px}
+  .wallet-dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}
+  .wallet-label{font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+  .wallet-value{font-size:13px;font-weight:750;margin-top:2px}
+  main{max-width:1240px;margin:auto;padding:0 28px}
+  .page{display:none;min-height:calc(100vh - 76px);animation:enter .45s ease}
+  .page.active{display:block}
+  @keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding:clamp(65px,11vh,125px) 0 85px}
+  .eyebrow{color:var(--green);font-size:11px;letter-spacing:.25em;text-transform:uppercase;display:flex;align-items:center;gap:10px;font-weight:750}
+  .eyebrow:before{content:"";width:26px;height:1px;background:var(--green)}
+  h1{font-size:clamp(48px,7.2vw,92px);line-height:.98;letter-spacing:-.065em;margin:24px 0}
+  h1 span{color:var(--green)}
+  .lead{max-width:540px;color:#a7b9ae;font-size:16px;line-height:1.9}
+  .actions{display:flex;gap:12px;align-items:center;margin-top:34px;flex-wrap:wrap}
+  .btn{border:1px solid transparent;border-radius:8px;padding:14px 20px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:.2s}
+  .btn-primary{background:var(--green);color:#04110a;box-shadow:0 0 28px rgba(57,245,154,.13)}
+  .btn-primary:hover{background:#70ffb8;transform:translateY(-2px);box-shadow:0 0 35px rgba(57,245,154,.25)}
+  .btn-secondary{background:transparent;color:var(--text);border-color:var(--line)}
+  .btn-secondary:hover{border-color:var(--green);color:var(--green)}
+  .hero-art{position:relative;min-height:410px;display:grid;place-items:center}
+  .orbit{width:min(390px,85vw);aspect-ratio:1;border:1px solid rgba(57,245,154,.2);border-radius:50%;display:grid;place-items:center;position:relative;box-shadow:0 0 100px rgba(22,185,106,.06),inset 0 0 60px rgba(22,185,106,.05)}
+  .orbit:before,.orbit:after{content:"";position:absolute;border:1px solid rgba(57,245,154,.12);border-radius:50%;inset:11%}
+  .orbit:after{inset:24%}
+  .core{width:44%;aspect-ratio:1;background:linear-gradient(135deg,#163d29,#07130c);border:1px solid rgba(57,245,154,.65);clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%);display:grid;place-items:center;color:var(--green);font-size:clamp(75px,12vw,130px);font-weight:950;filter:drop-shadow(0 0 20px rgba(57,245,154,.18));text-shadow:0 0 25px rgba(57,245,154,.2)}
+  .orbit-tag{position:absolute;background:#09130d;border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:10px;letter-spacing:.13em;color:#b5cbbd}
+  .tag-a{top:13%;right:-3%}.tag-b{bottom:17%;left:-6%}.tag-c{bottom:2%;right:14%}
+  .stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding:24px 0;margin-bottom:50px}
+  .stat{padding:0 20px;border-right:1px solid var(--line)}.stat:first-child{padding-left:0}.stat:last-child{border:0}
+  .stat strong{font-size:19px;color:var(--green);display:block}.stat span{font-size:10px;letter-spacing:.13em;color:var(--muted);text-transform:uppercase;display:block;margin-top:6px}
+  .section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:46px 0 28px}
+  .section-head h2{font-size:clamp(32px,4vw,48px);letter-spacing:-.045em;margin:12px 0 0}
+  .section-head p{color:var(--muted);font-size:12px;line-height:1.7;max-width:300px}
+  .catalog{padding-bottom:75px}
+  .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .product{border:1px solid var(--line);background:linear-gradient(160deg,rgba(16,34,23,.92),rgba(7,14,10,.95));border-radius:13px;overflow:hidden;transition:.25s}
+  .product:hover{transform:translateY(-5px);border-color:rgba(57,245,154,.48);box-shadow:0 15px 45px rgba(0,0,0,.25)}
+  .product-img{height:220px;position:relative;overflow:hidden;background:#0d1a12}
+  .product-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.72) brightness(.75);transition:.4s}
+  .product:hover .product-img img{transform:scale(1.04);filter:saturate(.9) brightness(.9)}
+  .product-img:after{content:"";position:absolute;inset:40% 0 0;background:linear-gradient(transparent,rgba(5,9,7,.7))}
+  .product-code{position:absolute;z-index:1;top:14px;left:14px;background:rgba(5,9,7,.8);border:1px solid var(--line);padding:7px 9px;border-radius:5px;color:var(--green);font-size:9px;letter-spacing:.16em}
+  .product-body{padding:20px}
+  .product-type{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--green)}
+  .product h3{font-size:21px;margin:9px 0}
+  .product p{font-size:12px;color:var(--muted);line-height:1.8;min-height:64px}
+  .product-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+  .price{font-size:16px;font-weight:850}.price small{font-size:9px;color:var(--muted);display:block;font-weight:500;margin-bottom:4px;letter-spacing:.12em}
+  .buy{padding:11px 13px;font-size:10px}
+  footer{border-top:1px solid var(--line);padding:24px 0 34px;color:#61786a;font-size:10px;letter-spacing:.08em;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+  .modal-backdrop.show{display:flex}
+  .modal{max-width:410px;width:100%;background:#0b1710;border:1px solid rgba(57,245,154,.4);border-radius:14px;padding:30px;text-align:center;box-shadow:0 20px 100px #000}
+  .check{margin:0 auto 18px;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:rgba(57,245,154,.1);border:1px solid var(--green);color:var(--green);font-size:24px}
+  .modal h3{font-size:23px;margin:0 0 10px}.modal p{color:var(--muted);font-size:13px;line-height:1.8;margin:0 0 23px}
+  .notice{font-size:10px;color:#718879;margin-top:18px}
+  @media(max-width:800px){.hero{grid-template-columns:1fr;padding-top:65px;gap:20px}.hero-art{min-height:330px;order:-1}.orbit{width:290px}.core{font-size:90px}.product-grid{grid-template-columns:1fr 1fr}.product-img{height:180px}.section-head{align-items:start;flex-direction:column}}
+  @media(max-width:540px){main{padding:0 18px}.topbar{padding:0 16px;height:68px}.brand{font-size:15px}.brandmark{width:30px;height:30px}.wallet{padding:8px}.wallet-label{font-size:8px}.wallet-value{font-size:11px}.hero{padding-top:48px}.hero-art{min-height:270px}.orbit{width:245px}.core{font-size:76px}.tag-a{right:-8%}.tag-b{left:-10%}.product-grid{grid-template-columns:1fr}.product-img{height:220px}.stats{gap:8px}.stat{padding:0 9px}.stat strong{font-size:16px}.stat span{font-size:8px;line-height:1.5}.lead{font-size:14px}}
+
+
+/* ===== LOADING SCREEN ===== */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  background: #050907;
+  transition: opacity .45s ease, visibility .45s ease;
+}
+.loading-screen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loading-brand {
+  color: #edf7f0;
+  font-size: 17px;
+  font-weight: 850;
+  letter-spacing: .28em;
+}
+.loading-brand span { color: #39f59a; }
+.loading-track {
+  width: min(300px, 68vw);
+  height: 8px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(57,245,154,.13);
+  border: 1px solid rgba(57,245,154,.2);
+}
+.loading-bar {
+  width: 42%;
+  height: 100%;
+  border-radius: inherit;
+  background: #39f59a;
+  box-shadow: 0 0 18px rgba(57,245,154,.75);
+  animation: loading-sweep 1.15s ease-in-out infinite;
+}
+.loading-caption {
+  color: #91a69a;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+@keyframes loading-sweep {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(340%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-bar { animation-duration: 2.5s; }
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen" aria-label="Memuat NOCTRA">
+  <div class="loading-brand">N<span>O</span>CTRA</div>
+  <div class="loading-track"><div class="loading-bar"></div></div>
+  <div class="loading-caption">Menyiapkan akses...</div>
+</div>
+
+<div class="noise"></div>
+<header class="topbar">
+  <div class="brand"><div class="brandmark">N</div><div>Krafton<small>MARKET</small></div></div>
+  <div class="wallet" aria-label="Saldo simulasi"><span class="wallet-dot"></span><div><div class="wallet-label">Saldo</div><div class="wallet-value" id="balance">Rp ???</div></div></div>
+</header>
+<main>
+  <section id="home" class="page active">
+    <div class="hero">
+      <div>b
+        <div class="eyebrow">PRIVATE ACCESS · 001</div>
+        <h1>Beyond the<br><span>ordinary.</span></h1>
+        <p class="lead">Selamat datang di Krafton — marketplace gelap disini kami menawarkan 3 barang kami yang tentu sudah aman 
+        gambar di web hanyalah gambar pengalihan agar web tidak terblokir.</p>
+        <p class="lead">Jelajahi beli nikmati</p>
+        <div class="actions"><button class="btn btn-primary" id="startBtn">Mulai menjelajah <span aria-hidden="true">↗</span></button><button class="btn btn-secondary" id="learnBtn">Lihat detail</button></div>
+      </div>
+      <div class="hero-art" aria-label="Logo NOCTRA">
+        <div class="orbit"><div class="core">N</div><div class="orbit-tag tag-a">ENCRYPTED AESTHETIC</div><div class="orbit-tag tag-b">CURATED OBJECTS / 03</div><div class="orbit-tag tag-c">Kraftom ® 2018</div></div>
+      </div>
+    </div>
+    <div class="stats"><div class="stat"><strong>03</strong><span>Curated objects</span></div><div class="stat"><strong>24/7</strong><span>Open interface</span></div><div class="stat"><strong>100%</strong><span>Demo experience</span></div></div>
+    <footer><span>© 2018 KRAFTON MARKET</span><span>PRIVATE STORE</span></footer>
+  </section>
+
+  <section id="shop" class="page">
+    <div class="section-head"><div><div class="eyebrow">THE COLLECTION / 001—003</div><h2>Selected objects.</h2></div><p>Barang pilihan .</p></div>
+    <div class="catalog">
+      <div class="product-grid">
+        <article class="product">
+          <div class="product-img"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85" alt="Jam tangan minimalis" loading="lazy"><span class="product-code">N° 001 / TIME</span></div>
+          <div class="product-body"><div class="product-type">Risk 94%</div><h3>Kokain</h3><p>Sistem aman dengan sistem COD barang di selundupkan ke dalam barang barang elektronik</p><div class="product-foot"><div class="price"><small>Harga Saat COD</small>Rp 400.000</div><button class="btn btn-primary buy" data-name="Obsidian Watch">Pesan ↗</button></div></div>
+        </article>
+        <article class="product">
+          <div class="product-img"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85" alt="Headphone hitam" loading="lazy"><span class="product-code">N° 002 / AUDIO</span></div>
+          <div class="product-body"><div class="product-type">Habis</div><h3>Habis</h3><p>Habis</p><div class="product-foot"><div class="price"><small>Harga saat COD</small>Rp 1.250.000</div><button class="btn btn-primary buy" data-name="Phantom Audio">Pesan ↗</button></div></div>
+        </article>
+        <article class="product">
+          <div class="product-img"><img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=85" alt="Kamera bergaya klasik" loading="lazy"><span class="product-code">N° 003 / IMAGE</span></div>
+          <div class="product-body"><div class="product-type">Habis</div><h3>Habis</h3><p>Habis</p><div class="product-foot"><div class="price"><small>Harga saat COD</small>Rp 2.100.000</div><button class="btn btn-primary buy" data-name="Mono Camera">Pesan ↗</button></div></div>
+        </article>
+      </div>
+    </div>
+    <footer><span>© 2018 Krafton</span><button class="btn btn-secondary" id="backBtn">← Kembali ke awal</button><span>L set</span></footer>
+  </section>
+</main>
+
+<div class="modal-backdrop show" id="welcomeBackdrop" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <div class="modal">
+    <div class="check">✦</div>
+    <div class="eyebrow" style="justify-content:center;margin-bottom:14px">ACCESS GRANTED · Krafton</div>
+    <h3 id="welcomeTitle">Halo, Rama.</h3>
+    <p>Selamat datang kembali di Krafton, Rama. Siap memulai?</p>
+    <button class="btn btn-primary" id="enterSite">Masuk ke Krafton ↗</button>
+    <div class="notice">YOUR SESSION STARTS HERE</div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal"><div class="check">✓</div><h3 id="modalTitle">Pesanan berhasil dibuat</h3><p id="modalMessage">Barang sudah di pesan dan akan tiba dalam 3–5 hari lagi.</p><button class="btn btn-primary" id="closeModal">Mengerti</button><div class="notice">DEMO STORE · Tidak ada transaksi sungguhan</div></div>
+</div>
+<script>
+
+// ===== LOADING SCREEN =====
+window.addEventListener('load', () => {
+  const initialLoadingScreen = document.getElementById('loadingScreen');
+  // Loading awal sebelum popup sambutan muncul.
+  window.setTimeout(() => {
+    initialLoadingScreen?.classList.add('is-hidden');
+  }, 1500);
+});
+
+
+const welcomeBackdrop = document.getElementById('welcomeBackdrop');
+  document.getElementById('enterSite').addEventListener('click', () => {
+    welcomeBackdrop.classList.remove('show');
+  });
+  welcomeBackdrop.addEventListener('click', event => {
+    if (event.target === welcomeBackdrop) welcomeBackdrop.classList.remove('show');
+  });
+
+  const home = document.getElementById('home');
+  const shop = document.getElementById('shop');
+  const modal = document.getElementById('modalBackdrop');
+  const loadingScreen = document.getElementById('loadingScreen');
+  let pageTransitionTimer;
+  function transitionToPage(targetPage, otherPage) {
+    if (pageTransitionTimer) window.clearTimeout(pageTransitionTimer);
+    loadingScreen?.classList.remove('is-hidden');
+    window.scrollTo({top:0, behavior:'auto'});
+    pageTransitionTimer = window.setTimeout(() => {
+      otherPage.classList.remove('active');
+      targetPage.classList.add('active');
+      window.scrollTo({top:0, behavior:'auto'});
+      // Biarkan loading terlihat sebentar agar perpindahan terasa halus.
+      pageTransitionTimer = window.setTimeout(() => {
+        loadingScreen?.classList.add('is-hidden');
+      }, 850);
+    }, 650);
+  }
+  function showShop(){transitionToPage(shop, home);}
+  function showHome(){transitionToPage(home, shop);}
+  document.getElementById('startBtn').addEventListener('click',showShop);
+  document.getElementById('learnBtn').addEventListener('click',showShop);
+  document.getElementById('backBtn').addEventListener('click',showHome);
+  document.querySelectorAll('.buy').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const product = button.dataset.name;
+      document.getElementById('modalTitle').textContent = 'Pesanan berhasil dibuat';
+      document.getElementById('modalMessage').textContent = product + ' sudah di pesan dan akan tiba dalam 3–5 hari lagi.';
+      modal.classList.add('show');
+    });
+  });
+  function closeModal(){modal.classList.remove('show');}
+  document.getElementById('closeModal').addEventListener('click',closeModal);
+  modal.addEventListener('click',event=>{if(event.target===modal)closeModal();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')closeModal();});
+
+</script>
+</body>
+</html>
